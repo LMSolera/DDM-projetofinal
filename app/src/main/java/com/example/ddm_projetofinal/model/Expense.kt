@@ -42,3 +42,13 @@ val expense3 = Expense (
     date = "25/12/2025",
     type = "Estadia"
 )
+
+val expense4 = Expense (
+    id = "12321i9",
+    tripId = "mqny7vcx",
+    ownerId = "aowjg6cb",
+    value = 98.50,
+    observation = "Pagamento prévio do ônibus de viagem",
+    date = "25/12/2025",
+    type = "Transporte"
+)
