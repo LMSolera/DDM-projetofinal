@@ -3,6 +3,9 @@ package com.example.ddm_projetofinal.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -12,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ddm_projetofinal.model.User
@@ -28,6 +33,10 @@ fun PasswordChangeDialog (
     var newPassword by remember { mutableStateOf("") }
     var newPasswordConfirm by remember { mutableStateOf("") }
 
+    var oldPasswordVisibility by remember { mutableStateOf(false) }
+    var newPasswordVisibility by remember { mutableStateOf(false) }
+    var newPasswordConfirmVisibility by remember { mutableStateOf(false) }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -36,9 +45,7 @@ fun PasswordChangeDialog (
             )
         },
         text = {
-            Column(
-
-            ) {
+            Column {
                 OutlinedTextField(
                     value = oldPassword,
                     onValueChange = {
@@ -48,6 +55,27 @@ fun PasswordChangeDialog (
                         Text("Senha antiga")
                     },
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = if (oldPasswordVisibility) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    trailingIcon = {
+                        IconButton (
+                            onClick = {
+                                oldPasswordVisibility = !oldPasswordVisibility
+                            }
+                        ) {
+                            Icon (
+                                imageVector = if (oldPasswordVisibility) {
+                                    Icons.Default.Visibility
+                                } else {
+                                    Icons.Default.VisibilityOff
+                                },
+                                contentDescription = "Ícone de olho"
+                            )
+                        }
+                    }
                 )
 
                 OutlinedTextField(
@@ -59,6 +87,27 @@ fun PasswordChangeDialog (
                         Text("Senha nova")
                     },
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = if (newPasswordVisibility) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    trailingIcon = {
+                        IconButton (
+                            onClick = {
+                                newPasswordVisibility = !newPasswordVisibility
+                            }
+                        ) {
+                            Icon (
+                                imageVector = if (newPasswordVisibility) {
+                                    Icons.Default.Visibility
+                                } else {
+                                    Icons.Default.VisibilityOff
+                                },
+                                contentDescription = "Ícone de olho"
+                            )
+                        }
+                    }
                 )
 
                 OutlinedTextField(
@@ -70,12 +119,37 @@ fun PasswordChangeDialog (
                         Text("Confirmar Senha Nova")
                     },
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = if (newPasswordConfirmVisibility) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    trailingIcon = {
+                        IconButton (
+                            onClick = {
+                                newPasswordConfirmVisibility = !newPasswordConfirmVisibility
+                            }
+                        ) {
+                            Icon (
+                                imageVector = if (newPasswordConfirmVisibility) {
+                                    Icons.Default.Visibility
+                                } else {
+                                    Icons.Default.VisibilityOff
+                                },
+                                contentDescription = "Ícone de olho"
+                            )
+                        }
+                    }
                 )
             }
         },
         confirmButton = {
             Button(
-                onClick = {}
+                onClick = {onConfirm},
+                enabled = if (!oldPassword.isEmpty()
+                    && !newPassword.isEmpty()
+                    && !newPasswordConfirm.isEmpty())
+                {true} else {false}
             ) {
                 Text("Confirmar")
             }
